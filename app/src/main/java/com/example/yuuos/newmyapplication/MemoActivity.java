@@ -27,6 +27,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+// git checkot .
+
 public class MemoActivity extends AppCompatActivity {
 
 
