@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="listView" type="id" />
+    <item name="toolbar" type="id" />
+    <item name="fab" type="id" />
+    <item name="tvTitle" type="id" />
+    <item name="action_settings" type="id" />
+    <item name="editText" type="id" />
+    <item name="editText2" type="id" />
+    <item name="action_delete" type="id" />
+    <item name="action_save" type="id" />
+    <item name="action_share" type="id" />
+    <item name="bottom_sheet" type="id" />
+    <item name="button_cancel_memoname" type="id" />
+    <item name="button_save_memoname" type="id" />
+    <item name="edit_text_memoname" type="id" />
+    <item name="list_view_memo_name" type="id" />
+    <item name="list_memo" type="id" />
+    <item name="fab_buttom" type="id" />
+    <item name="list_menu" type="id" />
+    <item name="button_save_wordname" type="id" />
+    <item name="edit_text_wordname" type="id" />
+    <item name="button_cancel_wordname" type="id" />
+</resources>

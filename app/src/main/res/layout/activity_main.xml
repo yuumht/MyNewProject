@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_light"
+    android:gravity="bottom"
+    tools:context=".MainActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:background="@android:color/background_light"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/background_light"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/button_background"
+                android:onClick="memo"
+                android:text="メモ帳"
+                android:textColor="#f0f0f0"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="211dp" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/button_background"
+                android:onClick="todo"
+                android:text="ToDo"
+                android:textColor="#f0f0f0"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="148dp"
+                tools:layout_editor_absoluteY="115dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/background_light"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <Button
+                android:id="@+id/button5"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/button_background"
+                android:onClick="money"
+                android:text="お小遣い帳"
+                android:textColor="#f0f0f0"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="145dp"
+                tools:layout_editor_absoluteY="211dp" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/button_background"
+                android:onClick="diary"
+                android:text="日記"
+                android:textColor="#f0f0f0"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="115dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/background_light"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/Word"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/button_background"
+                android:onClick="word"
+                android:text="単語帳"
+                android:textColor="#f0f0f0"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="280dp"
+                tools:layout_editor_absoluteY="115dp" />
+
+            <Button
+                android:id="@+id/button6"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/button_background"
+                android:onClick="body"
+                android:text="身体記録"
+                android:textColor="#f0f0f0"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="280dp"
+                tools:layout_editor_absoluteY="211dp" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
