@@ -1,6 +1,7 @@
 package com.example.yuuos.newmyapplication;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,32 +14,86 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.json.JSONArray;
 
-// git checkot .
+import java.util.ArrayList;
+
+// 元に戻すよう
+// git checkout .
+
+// 登録用
+// git add .
+// git commit -m "ここになにかこめんとを書く"
+
+//登録したやつをgithubに送るよう
+//git push origin master
 
 public class MemoActivity extends AppCompatActivity {
 
+    static final String APP_NAME = "MEMO";
+
+    final String APP_MEMO_KEY = "MEMO_KEY";
+    ArrayList<String> memoNameList;
+    ListView memoNameListView;
+    ArrayAdapter<String> arrayAdapter;
+    Toolbar toolbar;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("DEBUG", "Destoryed");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("DEBUG", "Resumed");
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memo);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        boolean successToLoadData = false;
+        memoNameList = loadList(this, APP_MEMO_KEY);
+
+        memoNameListView = findViewById(R.id.list_view_memo_name);
+        arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, memoNameList);
+        memoNameListView.setAdapter(arrayAdapter);
+
+        memoNameListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ArrayAdapter adapter = (ArrayAdapter)memoNameListView.getAdapter();
+
+                String item = (String)adapter.getItem(position);
+                adapter.remove(item);
+                adapter.add(item);
+            }
+        });
+
+        memoNameListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                ArrayAdapter adapter = (ArrayAdapter)memoNameListView.getAdapter();
+
+                String item = (String)adapter.getItem(position);
+                adapter.remove(item);
+                return false;
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -97,47 +152,16 @@ public class MemoActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(memoName)) {
                     Snackbar.make(v, "タイトルが入力されていません", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 } else {
-                    List<String> memoNameList = new ArrayList<String>();
-
-                    boolean addedNameExist = false;
-
-                    ListView memoNameListView = MemoActivity.this.findViewById(R.id.list_view_memo_name);
 
 
-                    if (memoNameListView != null) {
-                        ListAdapter listAdapter = memoNameListView.getAdapter();
-
-                        if (listAdapter != null) {
-                            int itemCount = listAdapter.getCount();
-                            for (int i = 0; i < itemCount; i++) {
-                                Object item = listAdapter.getItem(i);
-
-
-                                if (item != null) {
-                                    if (item instanceof String) {
-
-                                        String itemString = (String) item;
-                                        // 同じがどうかチェック
-                                        if (itemString.equalsIgnoreCase(memoName)) {
-                                            addedNameExist = true;
-                                        }
-
-                                        memoNameList.add(((String) item));
-                                    }
-                                }
-
-
-
-                            }
-                        }
-                    }
-
+                    boolean addedNameExist = memoNameList.contains(memoName);
                     // 重複がないとき
                     if (!addedNameExist) {
                         memoNameList.add(memoName);
+                        arrayAdapter.notifyDataSetChanged();
 
-                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, memoNameList);
-                        memoNameListView.setAdapter(arrayAdapter);
+                        saveList(MemoActivity.this, APP_MEMO_KEY, memoNameList);
+
 
                         memoNameListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -153,6 +177,7 @@ public class MemoActivity extends AppCompatActivity {
                     }
                 }
             }
+
         });
 
 
@@ -164,5 +189,37 @@ public class MemoActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    // 設定値 ArrayList<String> を保存（Context は Activity や Application や Service）
+    public static void saveList(Context ctx, String key, ArrayList<String> list) {
+        JSONArray jsonAry = new JSONArray();
+        for(int i=0; i<list.size(); i++) {
+            jsonAry.put(list.get(i));
+        }
+        SharedPreferences prefs = ctx.getSharedPreferences(APP_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(key, jsonAry.toString());
+        Log.d("DEBUG", jsonAry.toString());
+        editor.apply();
+    }
+
+    // 設定値 ArrayList<String> を取得（Context は Activity や Application や Service）
+    public static ArrayList<String> loadList(Context ctx, String key) {
+        ArrayList<String> list = new ArrayList<String>();
+        SharedPreferences prefs = ctx.getSharedPreferences(APP_NAME, Context.MODE_PRIVATE);
+        String strJson = prefs.getString(key, ""); // 第２引数はkeyが存在しない時に返す初期値
+        if(!strJson.equals("")) {
+            try {
+                JSONArray jsonAry = new JSONArray(strJson);
+                for(int i=0; i<jsonAry.length(); i++) {
+                    list.add(jsonAry.getString(i));
+                }
+            } catch(Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return list;
     }
 }
